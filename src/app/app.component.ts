@@ -4,6 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './service/api.service';
 import { BarChartComponent } from './chart/bar-chart/bar-chart.component';
 import { PieChartComponent } from './chart/pie-chart/pie-chart.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
+
 
 
   export  interface Statistics {
@@ -16,7 +19,7 @@ import { PieChartComponent } from './chart/pie-chart/pie-chart.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,  HttpClientModule],
+  imports: [RouterOutlet,  HttpClientModule, NgApexchartsModule],
   providers: [ApiService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

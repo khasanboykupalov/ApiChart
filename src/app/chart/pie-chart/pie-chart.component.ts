@@ -1,41 +1,32 @@
-import { Component, ViewChild } from '@angular/core';
-import { Statistics } from '../../app.component';
-import { ApiService } from '../../service/api.service';
-import   ApexCharts from 'apexcharts'
-import {ApexNonAxisChartSeries, ApexResponsive,ApexChart  } from "ng-apexcharts";
+import { ApiService } from './../../service/api.service';
 
-export type ChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  responsive: ApexResponsive[];
-  labels: any;
-};
+import { Component, ViewChild, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef } from '@angular/core';
+import { Statistics } from '../../app.component';
+import {ApexNonAxisChartSeries, ApexResponsive,ApexChart, NgApexchartsModule  } from "ng-apexcharts";
+import { ChartComponent } from "ng-apexcharts";
+
+
 
 @Component({
   selector: 'app-pie-chart',
   standalone: true,
-  imports: [],
+  imports: [NgApexchartsModule,],
   templateUrl: './pie-chart.component.html',
-  styleUrl: './pie-chart.component.css'
+  styleUrl: './pie-chart.component.css',
 })
 export class PieChartComponent {
 
   data!:Statistics[];
+  @ViewChild("chart") chart: any;
+  public chartOptions: any;
 
-  @ViewChild("chart") chartComponent:any;
-
-  public chartOptions: Partial<ChartOptions> = {};
-
-  constructor(private apiUrl: ApiService ) {
-
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) {
     this.chartOptions = {
-      series: this.data.map(item => item.solved),
+      series: [],
       chart: {
-        width: 380,
-        type: "pie"
+        type: "donut"
       },
-
-      labels: this.data.map(item => item.topic),
+      labels: [],
       responsive: [
         {
           breakpoint: 480,
@@ -50,15 +41,22 @@ export class PieChartComponent {
         }
       ]
     };
-
   }
 
   ngOnInit(): void {
-    this.apiUrl.getData('/problems-rating/admin/statistics-by-topic/').subscribe({
+    this.apiService.getData('/problems-rating/admin/statistics-by-topic/').subscribe({
 
       next:(res: Statistics[]) => {
         this.data=res;
-        console.log(this.data)
+        this.chartOptions
+
+        this.chartOptions = {
+          ...this.chartOptions,
+          series: this.data?.map(item => item?.solved),
+          labels: this.data?.map(item => item?.topic),
+      
+        };
+        console.log(this.chartOptions, 'opts');
       },
 
       error:() =>{
