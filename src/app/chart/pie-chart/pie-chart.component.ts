@@ -20,7 +20,7 @@ export class PieChartComponent {
   @ViewChild("chart") chart: any;
   public chartOptions: any;
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) {
+  constructor(private apiService: ApiService) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -65,5 +65,4 @@ export class PieChartComponent {
 
     });
   }
-
 }
