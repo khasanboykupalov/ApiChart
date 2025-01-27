@@ -4,13 +4,16 @@ import { Component, ViewChild, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef } from 
 import { Statistics } from '../../app.component';
 import {ApexNonAxisChartSeries, ApexResponsive,ApexChart, NgApexchartsModule  } from "ng-apexcharts";
 import { ChartComponent } from "ng-apexcharts";
+import { RouterModule } from '@angular/router';
 
+
+// Bu usulda ishlash tavsiya etiladi
 
 
 @Component({
   selector: 'app-pie-chart',
   standalone: true,
-  imports: [NgApexchartsModule,],
+  imports: [NgApexchartsModule,RouterModule],
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css',
 })

@@ -13,6 +13,7 @@ import {
   ApexTooltip, NgApexchartsModule} from "ng-apexcharts";
 import { Statistics } from '../../app.component';
 import { ApiService } from '../../service/api.service';
+import { RouterModule } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,7 +32,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-bar-chart',
   standalone: true,
-  imports: [NgApexchartsModule],
+  imports: [NgApexchartsModule,  RouterModule],
   templateUrl: './bar-chart.component.html',
   styleUrl: './bar-chart.component.css'
 })

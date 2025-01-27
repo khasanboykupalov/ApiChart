@@ -5,7 +5,7 @@ import { PieChartComponent } from './chart/pie-chart/pie-chart.component';
 
 export const routes: Routes = [
 
-    {path: "", redirectTo:"bar-chart", pathMatch:"full"},
+    {path: "", redirectTo:"pie-chart", pathMatch:"full"},
     {path: "bar-chart", component: BarChartComponent},
     {path: "pie-chart", component: PieChartComponent}
 
