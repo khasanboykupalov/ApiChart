@@ -1,25 +1,24 @@
+import { Component, ViewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+
 import { ApiService } from './../../service/api.service';
+import { Statistics } from '../chart.interface';
 
-import { Component, ViewChild, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef } from '@angular/core';
-import { Statistics } from '../../app.component';
-import {ApexNonAxisChartSeries, ApexResponsive,ApexChart, NgApexchartsModule  } from "ng-apexcharts";
-import { ChartComponent } from "ng-apexcharts";
-import { RouterModule } from '@angular/router';
-
+import { NgApexchartsModule } from "ng-apexcharts";
 
 // Bu usulda ishlash tavsiya etiladi
-
 
 @Component({
   selector: 'app-pie-chart',
   standalone: true,
-  imports: [NgApexchartsModule,RouterModule],
+  imports: [NgApexchartsModule, RouterLink],
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css',
 })
 export class PieChartComponent {
 
-  data!:Statistics[];
+
   @ViewChild("chart") chart: any;
   public chartOptions: any;
 
@@ -47,25 +46,25 @@ export class PieChartComponent {
   }
 
   ngOnInit(): void {
-    this.apiService.getData('/problems-rating/admin/statistics-by-topic/').subscribe({
+    this.apiService.getStatistics<Statistics[]>().subscribe({
 
-      next:(res: Statistics[]) => {
-        this.data=res;
+      next: (response) => {
         this.chartOptions
 
         this.chartOptions = {
           ...this.chartOptions,
-          series: this.data?.map(item => item?.solved),
-          labels: this.data?.map(item => item?.topic),
-      
+          series: response.map(item => item.solved),
+          labels: response.map(item => item.topic),
+
         };
         console.log(this.chartOptions, 'opts');
       },
 
-      error:() =>{
+      error: () => {
         console.error("Xatolik yuz berdi")
       }
 
     });
   }
 }
+

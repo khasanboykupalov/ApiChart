@@ -1,19 +1,13 @@
-import { Component, ViewChild, ChangeDetectorRef }  from '@angular/core';
-import  ApexCharts  from 'apexcharts'
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ChartComponent,
-  ApexTitleSubtitle,
-  ApexDataLabels,
-  ApexStroke,
-  ApexYAxis,
-  ApexXAxis,
-  ApexPlotOptions,
-  ApexTooltip, NgApexchartsModule} from "ng-apexcharts";
-import { Statistics } from '../../app.component';
+import { Component, ViewChild }  from '@angular/core';
+import { RouterLink, } from '@angular/router';
+
 import { ApiService } from '../../service/api.service';
-import { RouterModule } from '@angular/router';
+import { Statistics } from '../chart.interface';
+
+
+import { ApexAxisChartSeries, ApexChart, ApexTitleSubtitle, ApexDataLabels, ApexStroke, ApexYAxis, ApexXAxis, ApexPlotOptions, ApexTooltip, NgApexchartsModule} from "ng-apexcharts";
+
+
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -32,13 +26,12 @@ export type ChartOptions = {
 @Component({
   selector: 'app-bar-chart',
   standalone: true,
-  imports: [NgApexchartsModule,  RouterModule],
   templateUrl: './bar-chart.component.html',
-  styleUrl: './bar-chart.component.css'
+  styleUrl: './bar-chart.component.css',
+  imports: [NgApexchartsModule,  RouterLink],
 })
 export class BarChartComponent {
 
-  data!:Statistics[];
   @ViewChild("chart") chart : any;
   public chartOptions:any;
 
@@ -46,16 +39,16 @@ constructor(private apiService:ApiService,) {}
 
   ngOnInit(): void {
 
-    this.apiService.getData('/problems-rating/admin/statistics-by-topic/').subscribe({
-      next:(res: Statistics[]) => {
-        this.data=res;
-        console.log(this.data)
+    this.apiService.getStatistics<Statistics[]>().subscribe({
+      next:(response) => {
+        console.log(response)
 
         this.chartOptions = {
 
           series: [
             {
-              data:this.data.map(item => item.solved)
+              data:response.map(item => item.solved)
+
             }
           ],
           chart: {
@@ -109,7 +102,7 @@ constructor(private apiService:ApiService,) {}
             colors: ["#fff"]
           },
           xaxis: {
-            categories: this.data.map(item => item.topic)
+            categories: response.map(item => item.topic)
           },
           yaxis: {
             labels: {
